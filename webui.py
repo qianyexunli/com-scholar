@@ -22,7 +22,7 @@ HISTORY_FILE = Path("chat_history.json")
 st.set_page_config(page_title="Agent", layout="wide")
 
 # === 📌 Page Title ===
-st.title("comb scholar")
+st.title("µcombscholar")
 
 @st.cache_data
 def load_paper_data(path):
