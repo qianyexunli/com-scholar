@@ -1,13 +1,20 @@
+# Streamlit core
+streamlit==1.39.0
+rich==13.9.4
+
+# LangChain ecosystem
 langchain==0.2.16
 langchain-community==0.2.6
-langchain-core==0.2.23
-langchain-openai==0.2.10
-langchain-text-splitters==0.3.0
-neo4j==5.27.0
-py2neo==2021.2.4
-pydantic==2.9.2
-RapidFuzz==3.10.0
-requests==2.32.3
-streamlit==1.40.0
-tqdm==4.66.4 
-weaviate-client==4.14.1
+langchain-core==0.2.34
+
+# Vector database & embedding
+weaviate-client==4.7.2
+networkx==3.3
+
+# Common utilities
+pandas==2.2.2
+numpy==1.26.4
+matplotlib==3.9.0
+
+# Optional: For Huggingface embeddings
+sentence-transformers==2.7.0
