@@ -26,3 +26,6 @@ numpy==1.26.4
 pandas==2.2.2
 sentence-transformers==2.7.0
 matplotlib==3.9.0
+
+pyvis==0.3.2
+dashscope==1.18.0
