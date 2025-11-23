@@ -3,11 +3,14 @@ streamlit==1.39.0
 rich==13.9.4
 
 # ========= LangChain Ecosystem =========
+# Core LC version locked to avoid breaking changes
 langchain==0.2.16
 langchain-community==0.2.6
-langchain-core>=0.2.38,<0.3.0
+langchain-core==0.2.43
 langchain-openai==0.2.10
-langchain-text-splitters==0.3.0
+
+# MUST use <0.3.0 because langchain==0.2.x strictly requires it
+langchain-text-splitters==0.2.2
 
 # ========= Graph & Database =========
 neo4j==5.27.0
@@ -19,10 +22,10 @@ pydantic==2.9.2
 RapidFuzz==3.10.0
 requests==2.32.3
 tqdm==4.66.4
+networkx==3.3
 
-# ========= Recommended Additions =========
+# ========= ML & Embeddings =========
 numpy==1.26.4
 pandas==2.2.2
-networkx==3.3
 sentence-transformers==2.7.0
 matplotlib==3.9.0
