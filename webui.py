@@ -39,7 +39,6 @@ def save_chat_sessions():
     with open(CHAT_FILE, 'w', encoding='utf-8') as f:
         json.dump(st.session_state.chat_sessions, f, indent=4, ensure_ascii=False)
 
-
 def load_chat_sessions():
     path = CHAT_FILE
     if not os.path.exists(path):
@@ -98,9 +97,9 @@ if "api_key" not in st.session_state:
 if "base_url" not in st.session_state:
     st.session_state.base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 if "weaviate_url" not in st.session_state:
-    st.session_state.weaviate_url = "https://y2nhd32gq4cby7u0zzlapg.c0.asia-southeast1.gcp.weaviate.cloud"
+    st.session_state.weaviate_url = "https://rsrejek2sbwplpezelplq.c0.asia-southeast1.gcp.weaviate.cloud"
 if "weaviate_key" not in st.session_state:
-    st.session_state.weaviate_key = "YUhVcTR3bVh1Qk1rRVVxUF9sV2Fobi8vUnJnbG1wVkVPVE8wSkNIaGxzZEVic3FqM25ldWEyUG83eXl3PV92MjAw"
+    st.session_state.weaviate_key = "dkhhZEJLV2Z3R3grLzZCOF9nNnBha3JqdEp4YnhibXgzUk53eklQOFhVbWpHUE5ML0tJdXhBaTJ6ZlV3PV92MjAw"
 if "huggingface_key" not in st.session_state:
     st.session_state.huggingface_key = "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"
 if "model" not in st.session_state:
@@ -121,6 +120,16 @@ if "chat_sessions" not in st.session_state:
         st.session_state.chat_sessions["Chat 1"] = []
     st.session_state.current_session = list(st.session_state.chat_sessions.keys())[0]
 
+@st.cache_resource
+def get_weaviate_client():
+    import weaviate
+    from weaviate.classes.init import Auth
+    return weaviate.connect_to_weaviate_cloud(
+        cluster_url=st.session_state.weaviate_url,
+        auth_credentials=Auth.api_key(st.session_state.weaviate_key),
+        skip_init_checks=True
+    )
+    
 
 # ============ 🔧 设置区域（侧边栏） ============
 with st.sidebar:
