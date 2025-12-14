@@ -18,6 +18,7 @@ MERGED_JSON_PATH = 'papers.json'
 PAPER_INFO_PATH = 'paper_info.json'
 CHAT_FILE = 'chat_sessions.json'
 HISTORY_FILE = Path("chat_history.json")
+IMAGES_DIR = Path("images") 
 
 st.set_page_config(page_title="Agent", layout="wide")
 
@@ -91,7 +92,32 @@ def save_feedback_only(feedback_type, comment):
     except Exception as e:
         st.sidebar.error(f"❌ Feedback save failed: {e}")
         
+# === Display figures (关键新增部分) ===
+def display_figures(figs_dict):
+    """
+    动态显示 figs 字段对应图片。
+    支持本地 images 文件夹下的图片。
+    """
+    if not figs_dict:
+        return
 
+    st.markdown("---")
+    st.subheader("🖼 Figures in This Paper")
+
+    for key, value in figs_dict.items():
+        # value 格式: "description || filename.jpg"
+        parts = value.split("||")
+        description = parts[0].strip() if len(parts) > 0 else ""
+        img_filename = parts[1].strip() if len(parts) > 1 else ""
+
+        # 拼接图片路径
+        img_path = IMAGES_DIR / img_filename
+        if img_path.exists():
+            st.image(str(img_path), caption=description, use_container_width=True)
+        else:
+            st.warning(f"⚠️ Image not found: {img_filename}")
+            st.markdown(f"📝 {description}")
+            
 if "api_key" not in st.session_state:
     st.session_state.api_key = "sk-58c2a9a30bf74bc0bd69688acc27c83e"
 if "base_url" not in st.session_state:
@@ -304,6 +330,10 @@ if question:
                     if show_answer and st.session_state.answer:
                         st.subheader("📊 Answer")
                         st.markdown(result['answer'])
+
+                    figs_data = result.get("figs", {})
+                    if figs_data:
+                        display_figures(figs_data)
           
                 elif question_type == "Entity-Type":
                     entities = result["extract"]
@@ -377,6 +407,10 @@ if question:
                             db = item["database"]
                             step = item["step"]
                             st.subheader(f"Step {step}: Retrieved Results of {db}:")
+                            # ✅ 新增：在 Mixed-Type 中展示每个检索段落的图像
+                            for part in item.get("contexts", []):
+                                if "figs" in part:
+                                    display_figures(part["figs"])
                             if db == "Literature Text Database":
                                 with st.expander("References of the answer:"):
                                     for part in item["contexts"]:
